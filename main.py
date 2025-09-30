@@ -1,9 +1,13 @@
-from bleak import BleakClient
+from bleak import BleakClient, BleakScanner
 import asyncio
+import platform
 
 # Your LYWSD03MMC device details
 DEVICE_NAME = "LYWSD03MMC"
-DEVICE_ADDRESS = "F03CB50C-479B-58DE-BACF-1636D43EE92A"
+if platform.system() == "Windows":
+    DEVICE_ADDRESS = "A4:C1:38:7C:C8:2B"  # Windows format
+else:
+    DEVICE_ADDRESS = "F03CB50C-479B-58DE-BACF-1636D43EE92A"  # macOS format
 
 # LYWSD03MMC service and characteristic UUIDs
 TEMPERATURE_HUMIDITY_UUID = "ebe0ccc1-7a0a-4b0c-8a1a-6ff2997da3a6"  # Temperature/Humidity characteristic
@@ -50,19 +54,21 @@ async def connect_and_read_sensor():
     except Exception as e:
         print(f"Failed to connect: {e}")
         print("\nTrying to scan for the device again...")
-        # await scan_for_device()
+        await scan_for_device()
 
-# async def scan_for_device():
-#     print("Scanning for LYWSD03MMC device...")
-#     devices = await BleakScanner.discover(timeout=5.0)
+async def scan_for_device():
+    print("Scanning for LYWSD03MMC device...")
+    devices = await BleakScanner.discover(timeout=5.0)
     
-#     for device in devices:
-#         if device.name == "LYWSD03MMC":
-#             print(f"Found LYWSD03MMC: {device.address} (RSSI: signal strength)")
-#             return device.address
+    for device in devices:
+        if device.name == "LYWSD03MMC":
+            print(f"Found LYWSD03MMC: {device.address} (RSSI: signal strength)")
+            return device.address
+        else:
+            print(f"Found device: {device.name} - {device.address}")
     
-#     print("LYWSD03MMC device not found in scan")
-#     return None
+    print("LYWSD03MMC device not found in scan")
+    return None
 
 async def main():
     print("LYWSD03MMC Temperature/Humidity Reader")
