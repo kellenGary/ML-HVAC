@@ -27,7 +27,23 @@ TEMPERATURE_HUMIDITY_UUID=ebe0ccc1-7a0a-4b0c-8a1a-6ff2997da3a6
 
 ## Usage
 
-### 1. Start the sensor data collection:
+### Quick Start (Demo Mode)
+
+To try the dashboard without Bluetooth hardware:
+
+```bash
+# Generate sample data
+python demo.py
+
+# Launch the dashboard
+streamlit run streamlit_app.py
+```
+
+The dashboard will open in your default web browser at `http://localhost:8501`.
+
+### Production Mode (with Bluetooth Sensor)
+
+#### 1. Start the sensor data collection:
 
 ```bash
 python main.py
@@ -35,7 +51,7 @@ python main.py
 
 This will connect to your Bluetooth HVAC sensor and start collecting temperature and humidity data, storing it in `sensor_data.json`.
 
-### 2. Launch the Streamlit dashboard:
+#### 2. Launch the Streamlit dashboard:
 
 In a separate terminal:
 ```bash
