@@ -3,6 +3,9 @@ Streamlit HVAC Smart Home Display
 
 A dark-themed smart home interface for monitoring and controlling HVAC settings.
 Shows real-time temperature and humidity data with interactive controls.
+
+NOTE: This app currently requires a database backend to function.
+The old JSON-based data_store has been removed.
 """
 
 import streamlit as st
@@ -10,7 +13,6 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import pandas as pd
 from datetime import datetime
-from data_store import SensorDataStore
 
 # Page configuration
 st.set_page_config(
@@ -79,9 +81,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Initialize data store
-data_store = SensorDataStore()
-
 # Header
 st.markdown("<h1 style='text-align: center; margin-bottom: 0;'>🏠 Smart HVAC Control Center</h1>", 
             unsafe_allow_html=True)
@@ -90,9 +89,12 @@ st.markdown("<p style='text-align: center; color: #a0a0c0; font-size: 1.1rem;'>M
 
 st.markdown("---")
 
-# Get current readings
-readings = data_store.get_readings(limit=100)
-target_temp = data_store.get_target_temperature()
+# TODO: Replace with database connection
+st.warning("⚠️ This app requires a database backend. The old JSON-based data_store has been removed. Please configure a database connection.")
+
+# Placeholder for current readings
+readings = []
+target_temp = 22.0  # Default target temperature
 
 # Current Status Section
 st.markdown("<h2>📊 Current Status</h2>", unsafe_allow_html=True)
@@ -144,14 +146,14 @@ col1, col2, col3, col4, col5 = st.columns([1, 1, 2, 1, 1])
 
 with col1:
     if st.button("❄️ --", help="Decrease by 1°C"):
-        new_temp = target_temp - 1.0
-        data_store.set_target_temperature(new_temp)
+        target_temp = target_temp - 1.0
+        st.info(f"Target temperature set to {target_temp:.1f}°C (database connection required)")
         st.rerun()
 
 with col2:
     if st.button("🔽 -", help="Decrease by 0.5°C"):
-        new_temp = target_temp - 0.5
-        data_store.set_target_temperature(new_temp)
+        target_temp = target_temp - 0.5
+        st.info(f"Target temperature set to {target_temp:.1f}°C (database connection required)")
         st.rerun()
 
 with col3:
@@ -162,14 +164,14 @@ with col3:
 
 with col4:
     if st.button("🔼 +", help="Increase by 0.5°C"):
-        new_temp = target_temp + 0.5
-        data_store.set_target_temperature(new_temp)
+        target_temp = target_temp + 0.5
+        st.info(f"Target temperature set to {target_temp:.1f}°C (database connection required)")
         st.rerun()
 
 with col5:
     if st.button("🔥 ++", help="Increase by 1°C"):
-        new_temp = target_temp + 1.0
-        data_store.set_target_temperature(new_temp)
+        target_temp = target_temp + 1.0
+        st.info(f"Target temperature set to {target_temp:.1f}°C (database connection required)")
         st.rerun()
 
 st.markdown("---")

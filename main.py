@@ -2,7 +2,6 @@ import asyncio
 from contants import Config, ConfigurationError
 from connection_handler import connect_and_read_sensor
 from packet_timer import PacketTimer
-from data_store import SensorDataStore
 
 
 async def main():
@@ -19,21 +18,16 @@ async def main():
         # Create packet timer instance
         packet_timer = PacketTimer()
         
-        # Create data store for Streamlit display
-        data_store = SensorDataStore()
-        
         # You can adjust the monitoring duration here (in minutes)
         monitoring_duration = 5  # Monitor for 5 minutes by default
         
         print(f"Starting packet interval analysis for {monitoring_duration} minutes...")
-        print("💾 Data will be saved for Streamlit display")
         print("Press Ctrl+C to stop early and see results")
         
         await connect_and_read_sensor(
             config=config,
             packet_timer=packet_timer,
-            duration_minutes=monitoring_duration,
-            data_store=data_store
+            duration_minutes=monitoring_duration
         )
         
     except ConfigurationError as e:

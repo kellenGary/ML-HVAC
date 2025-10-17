@@ -6,7 +6,6 @@ This script creates sample data to demonstrate the Streamlit dashboard
 without needing actual Bluetooth hardware.
 """
 
-from data_store import SensorDataStore
 import random
 import time
 from datetime import datetime, timedelta
@@ -14,14 +13,6 @@ from datetime import datetime, timedelta
 def generate_sample_data(num_readings=100):
     """Generate sample sensor readings for demo purposes."""
     print("🔧 Generating sample HVAC sensor data...")
-    
-    store = SensorDataStore('sensor_data.json')
-    
-    # Clear any existing data
-    store.clear_readings()
-    
-    # Set a target temperature
-    store.set_target_temperature(22.0)
     
     # Generate readings over the past 2 hours
     base_time = datetime.now()
@@ -62,11 +53,6 @@ def generate_sample_data(num_readings=100):
         if (i + 1) % 20 == 0:
             print(f"  Generated {i + 1}/{num_readings} readings...")
     
-    readings = store.get_readings()
-    print(f"\n✅ Successfully generated {len(readings)} sample readings")
-    print(f"   Temperature range: {min(r['temperature'] for r in readings):.1f}°C - {max(r['temperature'] for r in readings):.1f}°C")
-    print(f"   Humidity range: {min(r['humidity'] for r in readings)}% - {max(r['humidity'] for r in readings)}%")
-    print(f"   Target temperature: {store.get_target_temperature()}°C")
     print("\n📊 You can now run: streamlit run streamlit_app.py")
     print("   to view the dashboard at http://localhost:8501")
 

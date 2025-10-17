@@ -7,7 +7,6 @@ from bleak import BleakClient, BleakScanner
 from contants import Config, DeviceConnectionError
 from packet_handler import parse_packet
 from packet_timer import PacketTimer
-from data_store import SensorDataStore
 
 
 async def scan_for_device(device_name: str = "LYWSD03MMC") -> Optional[str]:
@@ -36,8 +35,7 @@ async def scan_for_device(device_name: str = "LYWSD03MMC") -> Optional[str]:
 async def connect_and_read_sensor(
     config: Config,
     packet_timer: PacketTimer,
-    duration_minutes: int = 5,
-    data_store: Optional[SensorDataStore] = None
+    duration_minutes: int = 5
 ) -> None:
     """Connect to the HVAC sensor and read data for the specified duration.
     
@@ -45,7 +43,6 @@ async def connect_and_read_sensor(
         config: Configuration object containing device settings
         packet_timer: PacketTimer instance for tracking intervals
         duration_minutes: How long to monitor in minutes
-        data_store: Optional data store for persisting readings
         
     Raises:
         DeviceConnectionError: If connection to device fails
@@ -65,7 +62,7 @@ async def connect_and_read_sensor(
             
             while client.is_connected and datetime.datetime.now() < end_time:
                 print(f"\nAttempting to read temperature/humidity data...")
-                await parse_packet(client, config, packet_timer, data_store)
+                await parse_packet(client, config, packet_timer)
                 await asyncio.sleep(config.packet_interval)
             
             # Print final statistics

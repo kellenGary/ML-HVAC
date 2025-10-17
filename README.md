@@ -80,20 +80,10 @@ Use the control buttons to adjust your target temperature:
 - **Humidity Over Time**: Line graph showing humidity trends
 - **Statistics**: Average, minimum, and maximum values
 
-## Data Storage
-
-The system stores sensor data in `sensor_data.json` with the following structure:
-- Up to 1000 most recent readings
-- Temperature (°C)
-- Humidity (%)
-- Timestamp
-- Target temperature setting
-
 ## Architecture
 
 - `main.py`: Main application that connects to Bluetooth sensor and collects data
-- `streamlit_app.py`: Streamlit web interface for visualization and control
-- `data_store.py`: JSON-based data persistence layer
+- `streamlit_app.py`: Streamlit web interface for visualization and control (requires database backend)
 - `packet_handler.py`: Bluetooth packet parsing logic
 - `connection_handler.py`: Bluetooth connection management
 - `packet_timer.py`: Packet timing statistics
