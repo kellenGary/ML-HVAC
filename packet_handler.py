@@ -4,7 +4,7 @@ from bleak import BleakClient
 
 from contants import Config, PacketParsingError
 from packet_timer import PacketTimer
-
+from data_store import DataStore
 
 def _parse_sensor_data(data: bytes, temp_correction: float) -> Tuple[float, int]:
     """Parse raw sensor data into temperature and humidity values.
@@ -37,7 +37,8 @@ def _parse_sensor_data(data: bytes, temp_correction: float) -> Tuple[float, int]
 async def parse_packet(
     client: BleakClient,
     config: Config,
-    packet_timer: PacketTimer
+    packet_timer: PacketTimer,
+    data_store: DataStore
 ) -> Optional[Tuple[float, int]]:
     """Read and parse a packet from the HVAC sensor.
     
@@ -45,6 +46,7 @@ async def parse_packet(
         client: Connected Bluetooth client
         config: Configuration object containing device settings
         packet_timer: PacketTimer instance for tracking intervals
+        data_store: DataStore instance for persisting data
         
     Returns:
         Tuple of (temperature, humidity) if successful, None otherwise
@@ -65,6 +67,11 @@ async def parse_packet(
         # Display the results
         print(f"🌡️  Temperature: {temperature:.1f}°C ({temperature * 9/5 + 32:.1f}°F)")
         print(f"💧 Humidity: {humidity}%")
+        
+        # Store data with numeric timestamp
+        timestamp = datetime.datetime.now().timestamp()
+        data_store.write_packet(timestamp, temperature, humidity)
+        
         print(f"📅 Time: {datetime.datetime.now().strftime('%H:%M:%S.%f')[:-3]}")
         
         if interval is not None:

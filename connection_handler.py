@@ -7,6 +7,7 @@ from bleak import BleakClient, BleakScanner
 from contants import Config, DeviceConnectionError
 from packet_handler import parse_packet
 from packet_timer import PacketTimer
+from data_store import DataStore
 
 
 async def scan_for_device(device_name: str = "LYWSD03MMC") -> Optional[str]:
@@ -53,6 +54,9 @@ async def connect_and_read_sensor(
     print(f"Will monitor for {duration_minutes} minutes to calculate packet intervals")
     print("=" * 60)
     
+    # Initialize DataStore for persisting sensor data
+    data_store = DataStore()
+    
     try:
         async with BleakClient(device_info['address']) as client:
             print(f"Connected: {client.is_connected}")
@@ -62,7 +66,7 @@ async def connect_and_read_sensor(
             
             while client.is_connected and datetime.datetime.now() < end_time:
                 print(f"\nAttempting to read temperature/humidity data...")
-                await parse_packet(client, config, packet_timer)
+                await parse_packet(client, config, packet_timer, data_store)
                 await asyncio.sleep(config.packet_interval)
             
             # Print final statistics

@@ -43,10 +43,10 @@ class Config:
         )
         
         # Sensor calibration - sensor is off by 2.7 deg C
-        self.temp_correction = 2.7
+        self.temp_correction = 0
         
         # Expected packet interval in milliseconds
-        self.packet_interval = 1000
+        self.packet_interval = 1
     
     def _get_required_env(self, key: str, default: Optional[str] = None) -> str:
         """Get environment variable with optional default value."""
