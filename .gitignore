@@ -40,7 +40,6 @@ env/
 
 # Data files
 *.csv
-*.json
 sensor_data/
 
 # OS
