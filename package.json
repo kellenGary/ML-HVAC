@@ -1,0 +1,12 @@
+{
+  "name": "ml-hvac",
+  "version": "1.0.0",
+  "description": "A smart home HVAC monitoring and control system with a dark-themed CRA interface.",
+  "main": "index.js",
+  "scripts": {
+    "start": "cd client && npm start && cd .. && fastapi:start",
+    "fastapi:start": "cd backend && python3 main.py"
+  },
+  "author": "",
+  "license": "ISC"
+}
