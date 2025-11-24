@@ -1,45 +1,60 @@
 .metric-card {
-  background: white;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border-left: 4px solid;
-  transition: transform 0.2s, box-shadow 0.2s;
+  background: #121212;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  transition: background-color 0.2s;
 }
 
 .metric-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background-color: #1a1a1a;
 }
 
 .metric-header {
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 
 .metric-header h3 {
   margin: 0;
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
+  font-size: 14px;
+  font-weight: 400;
+  color: #ffffff;
+  margin-top: 8px;
 }
 
 .metric-value {
   display: flex;
-  align-items: baseline;
-  gap: 8px;
+  align-items: flex-start;
+  justify-content: center;
+  margin-bottom: 4px;
 }
 
 .metric-value .value {
-  font-size: 48px;
-  font-weight: 700;
+  font-size: 64px;
+  font-weight: 300;
   line-height: 1;
+  color: #ffffff;
 }
 
 .metric-value .unit {
   font-size: 24px;
-  font-weight: 500;
-  color: #666;
+  font-weight: 300;
+  color: #ffffff;
+  margin-top: 8px;
+}
+
+.metric-subtitle {
+  font-size: 12px;
+  color: #ff9500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 4px;
 }

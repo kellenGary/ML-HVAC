@@ -1,53 +1,63 @@
 .device-control {
-  background: white;
-  border-radius: 12px;
+  background: #121212;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  transition: background-color 0.2s;
+  cursor: pointer;
+  border: none;
 }
 
-.device-control.active {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+.device-control:hover {
+  background-color: #1a1a1a;
+}
+
+.device-control.active .device-icon {
+  color: #ffffff;
 }
 
 .device-header {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  margin-bottom: 16px;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 0;
 }
 
 .device-info {
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 12px;
 }
 
 .device-info h3 {
   margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: #333;
+  font-size: 14px;
+  font-weight: 400;
+  color: #ffffff;
+  margin-top: 8px;
+}
+
+.device-status {
+  font-size: 12px;
+  color: #ff9500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 4px;
 }
 
 .toggle-button {
-  padding: 8px 24px;
-  border: none;
-  border-radius: 24px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  color: white;
+  display: none; /* Hide the button, make the whole card clickable */
 }
 
-.toggle-button.off {
-  background-color: #ccc;
-}
-
-.toggle-button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+.device-level {
+  display: none; /* Hide slider for dashboard view */
 }
 
 .device-level {

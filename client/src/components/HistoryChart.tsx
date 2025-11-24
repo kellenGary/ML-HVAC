@@ -18,51 +18,54 @@ const HistoryChart: React.FC<HistoryChartProps> = ({ data }) => {
       <h2>24-Hour History</h2>
       <ResponsiveContainer width="100%" height={400}>
         <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#333" />
           <XAxis
             dataKey="timestamp"
-            stroke="#666"
+            stroke="#888"
             style={{ fontSize: '12px' }}
+            tick={{ fill: '#888' }}
           />
           <YAxis
             yAxisId="left"
-            stroke="#ef4444"
+            stroke="#ffffff"
             style={{ fontSize: '12px' }}
-            label={{ value: 'Temperature (°F)', angle: -90, position: 'insideLeft' }}
+            tick={{ fill: '#888' }}
+            label={{ value: 'Temperature (°F)', angle: -90, position: 'insideLeft', fill: '#888' }}
           />
           <YAxis
             yAxisId="right"
             orientation="right"
-            stroke="#3b82f6"
+            stroke="#ff9500"
             style={{ fontSize: '12px' }}
-            label={{ value: 'Humidity (%)', angle: 90, position: 'insideRight' }}
+            tick={{ fill: '#888' }}
+            label={{ value: 'Humidity (%)', angle: 90, position: 'insideRight', fill: '#888' }}
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: 'white',
-              border: '1px solid #e0e0e0',
-              borderRadius: '8px',
+              backgroundColor: '#1a1a1a',
+              border: '1px solid #333',
+              borderRadius: '4px',
               padding: '12px',
+              color: '#fff'
             }}
+            itemStyle={{ color: '#fff' }}
+            labelStyle={{ color: '#888' }}
           />
-          <Legend />
+          <Legend wrapperStyle={{ color: '#fff' }} />
           <Line
             yAxisId="left"
             type="monotone"
             dataKey="temperature"
-            stroke="#ef4444"
-            strokeWidth={2}
-            dot={false}
-            name="Temperature (°F)"
+            stroke="#ffffff"
+            activeDot={{ r: 8 }}
+            name="Temperature"
           />
           <Line
             yAxisId="right"
             type="monotone"
             dataKey="humidity"
-            stroke="#3b82f6"
-            strokeWidth={2}
-            dot={false}
-            name="Humidity (%)"
+            stroke="#ff9500"
+            name="Humidity"
           />
         </LineChart>
       </ResponsiveContainer>

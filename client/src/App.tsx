@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Thermometer, Droplets, Fan, Flame, Wind } from 'lucide-react';
+import { 
+  Thermometer, 
+  Droplets, 
+  Fan, 
+  Flame,
+} from 'lucide-react';
 import MetricCard from './components/MetricCard';
 import DeviceControl from './components/DeviceControl';
 import HistoryChart from './components/HistoryChart';
@@ -15,11 +20,8 @@ function App() {
   const [temperature, setTemperature] = useState(72.5);
   const [humidity, setHumidity] = useState(45.0);
   const [fanOn, setFanOn] = useState(false);
-  const [fanLevel, setFanLevel] = useState(50);
+  const [fanLevel] = useState(50);
   const [heaterOn, setHeaterOn] = useState(false);
-  const [heaterLevel, setHeaterLevel] = useState(50);
-  const [humidifierOn, setHumidifierOn] = useState(false);
-  const [humidifierLevel, setHumidifierLevel] = useState(50);
   const [historyData, setHistoryData] = useState<HistoryData[]>([]);
 
   useEffect(() => {
@@ -79,62 +81,40 @@ function App() {
     }
   };
 
-  const handleDeviceLevel = async (device: string, level: number) => {
-    try {
-      await fetch(`/api/devices/${device}/level`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ level }),
-      });
-    } catch (error) {
-      console.error(`Error setting ${device} level:`, error);
-    }
-  };
-
   return (
     <div className="app">
       <header className="app-header">
-        <Wind size={32} />
-        <h1>HVAC Control Dashboard</h1>
+        <h1>Services</h1>
       </header>
 
       <div className="container">
-        <section className="metrics-section">
-          <MetricCard
-            title="Temperature"
-            value={temperature}
-            unit="°F"
-            icon={Thermometer}
-            color="#ef4444"
-          />
-          <MetricCard
-            title="Humidity"
-            value={humidity}
-            unit="%"
-            icon={Droplets}
-            color="#3b82f6"
-          />
-        </section>
-
-        <section className="controls-section">
-          <h2>Device Controls</h2>
-          <div className="controls-grid">
-            <DeviceControl
-              name="Ceiling Fan"
-              icon={Fan}
-              isOn={fanOn}
-              onToggle={() => {
-                setFanOn(!fanOn);
-                handleDeviceToggle('fan', fanOn);
-              }}
-              color="#8b5cf6"
-              level={fanLevel}
-              onLevelChange={(level) => {
-                setFanLevel(level);
-                handleDeviceLevel('fan', level);
-              }}
-              hasLevel={true}
+        <div className="dashboard-grid">
+          {/* Climate Card - Wide */}
+          <div className="dashboard-item">
+             <MetricCard
+              title="Climate"
+              value={temperature}
+              unit="°"
+              icon={Thermometer}
+              color="#ffffff"
+              subtitle=""
             />
+          </div>
+
+          {/* Humidity */}
+          <div className="dashboard-item">
+             <MetricCard
+              title="Humidity"
+              value={humidity}
+              unit="%"
+              icon={Droplets}
+              color="#ffffff"
+              subtitle=""
+            />
+          </div>
+
+          {/* Heater - Extra */}
+          <div className="dashboard-item">
             <DeviceControl
               name="Heater"
               icon={Flame}
@@ -143,34 +123,32 @@ function App() {
                 setHeaterOn(!heaterOn);
                 handleDeviceToggle('heater', heaterOn);
               }}
-              color="#f59e0b"
-              level={heaterLevel}
-              onLevelChange={(level) => {
-                setHeaterLevel(level);
-                handleDeviceLevel('heater', level);
-              }}
-              hasLevel={true}
-            />
-            <DeviceControl
-              name="Humidifier"
-              icon={Droplets}
-              isOn={humidifierOn}
-              onToggle={() => {
-                setHumidifierOn(!humidifierOn);
-                handleDeviceToggle('humidifier', humidifierOn);
-              }}
-              color="#06b6d4"
-              level={humidifierLevel}
-              onLevelChange={(level) => {
-                setHumidifierLevel(level);
-                handleDeviceLevel('humidifier', level);
-              }}
-              hasLevel={true}
+              subtitle={heaterOn ? 'ON' : 'OFF'}
+              color="#ff3b30"
             />
           </div>
-        </section>
 
-        <HistoryChart data={historyData} />
+           {/* Fan Control - Extra */}
+           <div className="dashboard-item">
+            <DeviceControl
+              name="Fan"
+              icon={Fan}
+              isOn={fanOn}
+              onToggle={() => {
+                setFanOn(!fanOn);
+                handleDeviceToggle('fan', fanOn);
+              }}
+              subtitle={fanOn ? `${fanLevel}%` : 'OFF'}
+              color="#ff9500"
+            />
+          </div>
+
+        </div>
+        
+        {/* Chart Section */}
+        <div style={{ marginTop: '20px', padding: '20px', background: '#121212', border: '1px solid #333' }}>
+           <HistoryChart data={historyData} />
+        </div>
       </div>
     </div>
   );

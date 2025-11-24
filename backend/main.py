@@ -3,14 +3,13 @@ from contants import Config, ConfigurationError
 from connection_handler import connect_and_read_sensor
 from packet_timer import PacketTimer
 
-
 async def main():
     """Main entry point for the HVAC monitoring application."""
     try:
         # Initialize configuration
         config = Config()
         
-        print("LYWSD03MMC Temperature/Humidity Reader with Packet Interval Analysis")
+        print("Temperature/Humidity Reader with Packet Interval Analysis")
         print("=" * 70)
         print(f"Running on: {config.current_os}")
         print(f"Using device address: {config.device_address}")

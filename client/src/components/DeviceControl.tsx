@@ -7,10 +7,11 @@ interface DeviceControlProps {
   icon: LucideIcon;
   isOn: boolean;
   onToggle: () => void;
-  color: string;
+  color?: string;
   level?: number;
   onLevelChange?: (level: number) => void;
   hasLevel?: boolean;
+  subtitle?: string;
 }
 
 const DeviceControl: React.FC<DeviceControlProps> = ({
@@ -18,42 +19,20 @@ const DeviceControl: React.FC<DeviceControlProps> = ({
   icon: Icon,
   isOn,
   onToggle,
-  color,
-  level = 0,
-  onLevelChange,
-  hasLevel = false,
+  color = '#ffffff',
+  subtitle
 }) => {
   return (
-    <div className={`device-control ${isOn ? 'active' : ''}`}>
+    <div className={`device-control ${isOn ? 'active' : ''}`} onClick={onToggle}>
       <div className="device-header">
         <div className="device-info">
-          <Icon size={32} color={isOn ? color : '#ccc'} />
+          <Icon size={48} color={isOn ? color : '#666'} strokeWidth={1.5} />
           <h3>{name}</h3>
+          <span className="device-status" style={{ color: isOn ? '#ff9500' : '#666' }}>
+            {subtitle || (isOn ? 'ON' : 'OFF')}
+          </span>
         </div>
-        <button
-          className={`toggle-button ${isOn ? 'on' : 'off'}`}
-          onClick={onToggle}
-          style={isOn ? { backgroundColor: color } : {}}
-        >
-          {isOn ? 'ON' : 'OFF'}
-        </button>
       </div>
-      {hasLevel && isOn && (
-        <div className="device-level">
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={level}
-            onChange={(e) => onLevelChange?.(Number(e.target.value))}
-            className="level-slider"
-            style={{
-              background: `linear-gradient(to right, ${color} ${level}%, #e0e0e0 ${level}%)`,
-            }}
-          />
-          <span className="level-value">{level}%</span>
-        </div>
-      )}
     </div>
   );
 };

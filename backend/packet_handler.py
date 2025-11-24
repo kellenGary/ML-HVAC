@@ -39,8 +39,7 @@ async def parse_packet(
     config: Config,
     packet_timer: PacketTimer,
     data_store: DataStore
-    data_store: Optional[data_store] = None
-) -> Optional[Tuple[float, int]]:
+    ) -> Optional[Tuple[float, int]]:
     """Read and parse a packet from the HVAC sensor.
     
     Args:
@@ -48,7 +47,6 @@ async def parse_packet(
         config: Configuration object containing device settings
         packet_timer: PacketTimer instance for tracking intervals
         data_store: DataStore instance for persisting data
-        data_store: Optional data store for persisting readings
         
     Returns:
         Tuple of (temperature, humidity) if successful, None otherwise
@@ -65,10 +63,6 @@ async def parse_packet(
         
         # Parse the sensor data
         temperature, humidity = _parse_sensor_data(data, config.temp_correction)
-        
-        # Save to data store if provided
-        if data_store is not None:
-            data_store.add_reading(temperature, humidity)
         
         # Display the results
         print(f"🌡️  Temperature: {temperature:.1f}°C ({temperature * 9/5 + 32:.1f}°F)")
