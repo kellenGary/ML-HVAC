@@ -20,6 +20,7 @@ def start_api():
         allow_methods=["*"],
         allow_headers=["*"],
     )
+    
     import uvicorn
     uvicorn.run(app, host=API_HOST, port=API_PORT)
     

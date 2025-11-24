@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { 
   Thermometer, 
   Droplets, 
@@ -17,57 +17,12 @@ interface HistoryData {
 }
 
 function App() {
-  const [temperature, setTemperature] = useState(72.5);
-  const [humidity, setHumidity] = useState(45.0);
+  const [temperature] = useState(72.5);
+  const [humidity] = useState(45.0);
   const [fanOn, setFanOn] = useState(false);
   const [fanLevel] = useState(50);
   const [heaterOn, setHeaterOn] = useState(false);
-  const [historyData, setHistoryData] = useState<HistoryData[]>([]);
-
-  useEffect(() => {
-    fetchCurrentData();
-    fetchHistoryData();
-
-    const interval = setInterval(() => {
-      fetchCurrentData();
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const fetchCurrentData = async () => {
-    try {
-      const response = await fetch('/api/current');
-      const data = await response.json();
-      setTemperature(data.temperature);
-      setHumidity(data.humidity);
-    } catch (error) {
-      console.error('Error fetching current data:', error);
-      setTemperature(70 + Math.random() * 10);
-      setHumidity(40 + Math.random() * 20);
-    }
-  };
-
-  const fetchHistoryData = async () => {
-    try {
-      const response = await fetch('/api/history/24h');
-      const data = await response.json();
-      setHistoryData(data);
-    } catch (error) {
-      console.error('Error fetching history data:', error);
-      const mockData: HistoryData[] = [];
-      const now = Date.now();
-      for (let i = 24; i >= 0; i--) {
-        const time = new Date(now - i * 60 * 60 * 1000);
-        mockData.push({
-          timestamp: time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
-          temperature: 70 + Math.random() * 10,
-          humidity: 40 + Math.random() * 20,
-        });
-      }
-      setHistoryData(mockData);
-    }
-  };
+  const [historyData] = useState<HistoryData[]>([]);
 
   const handleDeviceToggle = async (device: string, isOn: boolean) => {
     try {
@@ -89,7 +44,7 @@ function App() {
 
       <div className="container">
         <div className="dashboard-grid">
-          {/* Climate Card - Wide */}
+          {/* Climate Card */}
           <div className="dashboard-item">
              <MetricCard
               title="Climate"
@@ -113,7 +68,7 @@ function App() {
             />
           </div>
 
-          {/* Heater - Extra */}
+          {/* Heater */}
           <div className="dashboard-item">
             <DeviceControl
               name="Heater"
@@ -128,7 +83,7 @@ function App() {
             />
           </div>
 
-           {/* Fan Control - Extra */}
+           {/* Fan Control */}
            <div className="dashboard-item">
             <DeviceControl
               name="Fan"

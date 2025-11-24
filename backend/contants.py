@@ -1,4 +1,3 @@
-
 import os
 import platform
 from dotenv import load_dotenv
@@ -47,6 +46,12 @@ class Config:
         
         # Expected packet interval in milliseconds
         self.packet_interval = 1
+
+        # Bond Bridge Configuration
+        self.bond_ip = self._get_required_env('BOND_IP')
+        self.bond_token = self._get_required_env('BOND_TOKEN')
+        self.fan_bond_id = self._get_required_env('FAN_BOND_ID')
+        self.heater_bond_id = os.getenv('HEATER_BOND_ID') # Optional for now
     
     def _get_required_env(self, key: str, default: Optional[str] = None) -> str:
         """Get environment variable with optional default value."""
