@@ -1,7 +1,7 @@
 import asyncio
-from contants import Config, ConfigurationError
-from connection_handler import connect_and_read_sensor
-from packet_timer import PacketTimer
+from shared.constants import Config, ConfigurationError
+from services.monitor.connection_handler import connect_and_read_sensor
+from services.monitor.packet_timer import PacketTimer
 
 async def main():
     """Main entry point for the HVAC monitoring application."""
@@ -17,16 +17,14 @@ async def main():
         # Create packet timer instance
         packet_timer = PacketTimer()
         
-        # You can adjust the monitoring duration here (in minutes)
-        monitoring_duration = 5  # Monitor for 5 minutes by default
-        
-        print(f"Starting packet interval analysis for {monitoring_duration} minutes...")
+        # Monitor continuously
+        print(f"Starting continuous packet interval analysis...")
         print("Press Ctrl+C to stop early and see results")
         
         await connect_and_read_sensor(
             config=config,
             packet_timer=packet_timer,
-            duration_minutes=monitoring_duration
+            duration_minutes=None
         )
         
     except ConfigurationError as e:

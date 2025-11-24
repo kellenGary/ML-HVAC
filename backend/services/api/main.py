@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.api_constants import API_PORT, API_HOST, ALLOWED_ORIGINS
-from routers import db, action
+from services.api.api_constants import API_PORT, API_HOST, ALLOWED_ORIGINS
+from services.api.routers import db, action
 
 # Run on the port
 def start_api():
@@ -23,4 +23,6 @@ def start_api():
     
     import uvicorn
     uvicorn.run(app, host=API_HOST, port=API_PORT)
-    
+
+if __name__ == "__main__":
+    start_api()

@@ -1,6 +1,6 @@
 import aiohttp
 import logging
-from contants import Config
+from shared.constants import Config
 
 logger = logging.getLogger(__name__)
 

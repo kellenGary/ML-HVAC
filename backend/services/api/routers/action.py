@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from device_manager import DeviceManager
+from services.api.device_manager import DeviceManager
 
 dm = DeviceManager()
 

@@ -7,8 +7,8 @@ improving testability and maintainability through clear interface definitions.
 
 from typing import Protocol, Optional, Tuple, Dict
 from bleak import BleakClient
-from packet_timer import PacketTimer
-from contants import Config
+from services.monitor.packet_timer import PacketTimer
+from shared.constants import Config
 
 
 class PacketParser(Protocol):

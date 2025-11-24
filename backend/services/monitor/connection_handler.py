@@ -4,10 +4,10 @@ import datetime
 from typing import Optional
 from bleak import BleakClient, BleakScanner
 
-from contants import Config, DeviceConnectionError
-from packet_handler import parse_packet
-from packet_timer import PacketTimer
-from data_store import DataStore
+from shared.constants import Config, DeviceConnectionError
+from services.monitor.packet_handler import parse_packet
+from services.monitor.packet_timer import PacketTimer
+from shared.data_store import DataStore
 
 
 async def scan_for_device(device_name: str = "LYWSD03MMC") -> Optional[str]:
@@ -36,14 +36,14 @@ async def scan_for_device(device_name: str = "LYWSD03MMC") -> Optional[str]:
 async def connect_and_read_sensor(
     config: Config,
     packet_timer: PacketTimer,
-    duration_minutes: int = 5
+    duration_minutes: Optional[int] = 5
 ) -> None:
     """Connect to the HVAC sensor and read data for the specified duration.
     
     Args:
         config: Configuration object containing device settings
         packet_timer: PacketTimer instance for tracking intervals
-        duration_minutes: How long to monitor in minutes
+        duration_minutes: How long to monitor in minutes. If None, runs forever.
         
     Raises:
         DeviceConnectionError: If connection to device fails
@@ -51,7 +51,10 @@ async def connect_and_read_sensor(
     device_info = config.device_info
     print(f"Connecting to {device_info['name']} device")
     print(f"MAC Address: {device_info['address']}")
-    print(f"Will monitor for {duration_minutes} minutes to calculate packet intervals")
+    if duration_minutes:
+        print(f"Will monitor for {duration_minutes} minutes to calculate packet intervals")
+    else:
+        print("Will monitor continuously")
     print("=" * 60)
     
     # Initialize DataStore for persisting sensor data
@@ -62,9 +65,12 @@ async def connect_and_read_sensor(
             print(f"Connected: {client.is_connected}")
             
             start_time = datetime.datetime.now()
-            end_time = start_time + datetime.timedelta(minutes=duration_minutes)
+            if duration_minutes:
+                end_time = start_time + datetime.timedelta(minutes=duration_minutes)
+            else:
+                end_time = None
             
-            while client.is_connected and datetime.datetime.now() < end_time:
+            while client.is_connected and (end_time is None or datetime.datetime.now() < end_time):
                 print(f"\nAttempting to read temperature/humidity data...")
                 await parse_packet(client, config, packet_timer, data_store)
                 await asyncio.sleep(config.packet_interval)
